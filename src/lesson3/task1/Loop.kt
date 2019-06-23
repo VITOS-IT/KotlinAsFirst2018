@@ -1,6 +1,12 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson3.task1
 
+import lesson1.task1.sqr
+import java.lang.Math.pow
+import kotlin.math.PI
+import kotlin.math.abs
+import kotlin.math.cos
 import kotlin.math.sqrt
 
 /**
@@ -11,7 +17,7 @@ import kotlin.math.sqrt
 fun factorial(n: Int): Double {
     var result = 1.0
     for (i in 1..n) {
-        result = result * i // Please do not fix in master
+        result *= i // Please do not fix in master
     }
     return result
 }
@@ -38,7 +44,7 @@ fun isPrime(n: Int): Boolean {
  */
 fun isPerfect(n: Int): Boolean {
     var sum = 1
-    for (m in 2..n/2) {
+    for (m in 2..n / 2) {
         if (n % m > 0) continue
         sum += m
         if (sum > n) break
@@ -66,7 +72,15 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int = TODO()
+fun digitNumber(n: Int): Int {
+    var k = 0
+    var num = n
+    do {
+        num /= 10
+        k++
+    } while (num > 0)
+    return k
+}
 
 /**
  * Простая
@@ -74,7 +88,7 @@ fun digitNumber(n: Int): Int = TODO()
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fib(n: Int): Int = if (n == 1) 1 else if (n == 2) 1 else fib(n - 1) + fib(n - 2)
 
 /**
  * Простая
@@ -89,14 +103,32 @@ fun lcm(m: Int, n: Int): Int = TODO()
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = TODO()
+fun minDivisor(n: Int): Int {
+    var num = 1
+    for (i in 2..n) {
+        if (n % i == 0) {
+            num = i
+            break
+        }
+    }
+    return num
+}
 
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int {
+    var num = 1
+    for (i in n - 1 downTo 1) {
+        if (n % i == 0) {
+            num = i
+            break
+        }
+    }
+    return num
+}
 
 /**
  * Простая
@@ -114,7 +146,18 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
+fun squareBetweenExists(m: Int, n: Int): Boolean {
+    var i: Long
+    i = 1
+    while (i * i <= n) {
+        if (i * i >= m) {
+            return true
+            break
+        }
+        i++
+    }
+    return false
+}
 
 /**
  * Средняя
@@ -132,7 +175,15 @@ fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
-fun collatzSteps(x: Int): Int = TODO()
+fun collatzSteps(x: Int): Int {
+    var i = 0
+    var x1 = x
+    while (x1 != 1) {
+        if (x1 % 2 == 0) x1 /= 2 else x1 = 3 * x1 + 1
+        i++
+    }
+    return i
+}
 
 /**
  * Средняя
@@ -141,7 +192,19 @@ fun collatzSteps(x: Int): Int = TODO()
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double {
+    var delta = 100.0
+    var num = x
+    var i = 3
+    var znak = 1
+    while (abs(delta) > eps) {
+        delta = pow(x, i.toDouble()) / factorial(i)
+        if (znak%2 == 1)num -= delta else num += delta
+        i += 2
+        znak++
+    }
+    return num
+}
 
 /**
  * Средняя
@@ -150,8 +213,20 @@ fun sin(x: Double, eps: Double): Double = TODO()
  * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double{
+    var delta = 100.0
+    var num = 1.0
+    var i = 2
+    var znak = 1
+    while (abs(delta) > eps) {
+        delta = pow(x, i.toDouble()) / factorial(i)
+        if (znak%2 == 1)num -= delta else num += delta
+        i += 2
+        znak++
+    }
+    return num
 
+}
 /**
  * Средняя
  *
@@ -203,3 +278,7 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun fibSequenceDigit(n: Int): Int = TODO()
+
+fun main(args: Array<String>) {
+    println(cos(100 * PI))
+}

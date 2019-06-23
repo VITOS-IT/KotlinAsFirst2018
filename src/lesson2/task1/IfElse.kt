@@ -1,7 +1,13 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.quadraticRootProduct
+import lesson1.task1.seconds
+import lesson1.task1.sqr
+import kotlin.math.PI
+import kotlin.math.acos
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -62,7 +68,20 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String = TODO()
+fun ageDescription(age: Int): String {
+    val s: String
+    if ((5 < age % 100) && (age % 100 < 20)) s = "$age лет"
+    else {
+        val a = age % 10
+
+        when (a) {
+            1 -> s = "$age год"
+            2, 3, 4 -> s = "$age года"
+            else -> s = "$age лет"
+        }
+    }
+    return s
+}
 
 /**
  * Простая
@@ -73,7 +92,34 @@ fun ageDescription(age: Int): String = TODO()
  */
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
-                   t3: Double, v3: Double): Double = TODO()
+                   t3: Double, v3: Double): Double {
+    var length: Double
+    var time: Double
+    length = (t1 * v1 + t2 * v2 + t3 * v3) / 2
+    if (t1 * v1 > length) {
+        time = length / v1
+        length = 0.0
+    } else {
+        time = t1
+        length = length - t1 * v1
+    }
+
+    if (t2 * v2 > length) {
+        time += length / v2
+        length = 0.0
+    } else {
+        time += t2
+        length = length - t2 * v2
+    }
+    if (t3 * v3 > length) {
+        time += length / v3
+        length = 0.0
+    } else {
+        time += t3
+        length -= t3 * v3
+    }
+    return time
+}
 
 /**
  * Простая
@@ -86,7 +132,13 @@ fun timeForHalfWay(t1: Double, v1: Double,
  */
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
-                       rookX2: Int, rookY2: Int): Int = TODO()
+                       rookX2: Int, rookY2: Int): Int {
+    var index = 0
+    if ((kingX == rookX1) || (kingY == rookY1)) index = 1
+    if ((kingX == rookX2) || (kingY == rookY2)) index += 2
+
+    return index
+}
 
 /**
  * Простая
@@ -100,7 +152,13 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
  */
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
-                          bishopX: Int, bishopY: Int): Int = TODO()
+                          bishopX: Int, bishopY: Int): Int {
+    var index = 0
+    if ((kingX == rookX) || (kingY == rookY)) index = 1
+//    if ((kingX ==) || (kingY ==)) index += 2
+
+    return index
+}
 
 /**
  * Простая
@@ -110,8 +168,24 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    var res: Int
+    if ((a + b <= c) || (b + c <= a) || (c + a <= b)) res = -1
+    else if ((angel(a,b,c)>PI/2)||(angel(b,c,a)>PI/2)||(angel(c,a,b)>PI/2)) res = 2
+    else if ((angel(a,b,c)==PI/2)||(angel(b,c,a)==PI/2)||(angel(c,a,b)==PI/2)) res = 1
+    else res = 0
 
+    return res
+}
+fun main(args: Array<String>) {
+   println( angel(3.0,4.0,5.0))
+    println(PI/2)
+}
+fun angel(a: Double, b: Double, c: Double): Double {
+    val angel: Double
+    angel = acos((sqr(a) + sqr(b) - sqr(c)) / (2 * a * b))
+    return angel
+}
 /**
  * Средняя
  *
